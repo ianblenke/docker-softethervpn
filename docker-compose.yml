@@ -1,0 +1,11 @@
+softethervpn:
+  image: ianblenke/softethervpn
+#  build: .
+  ports:
+    - "500:500/udp"   # IPSEC IKE
+    - "1194:1194/udp" # OpenVPN data
+    - "1194:1194/tcp" # OpenVPN control
+    - "1701:1701/udp" # L2TP data
+    - "1701:1701/tcp" # L2TP control
+    - "4500:4500/udp" # IPSEC NAT-T data
+  env_file: .env
