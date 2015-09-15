@@ -36,10 +36,13 @@ while : ; do
 done
 
 # enable L2TP_IPsec
-/opt/vpncmd localhost /SERVER /CSV /CMD IPsecEnable /L2TP:yes /L2TPRAW:yes /ETHERIP:no /PSK:${PSK} /DEFAULTHUB:DEFAULT
+/opt/vpncmd localhost /SERVER /CSV /CMD IPsecEnable /L2TP:${IPSECENABLE_L2TP:-yes} /L2TPRAW:${IPSECENABLE_L2TPRAW:-yes} /ETHERIP:${IPSECENABLE_ETHERIP:-no} /PSK:${PSK} /DEFAULTHUB:DEFAULT
 
 # enable SecureNAT
 /opt/vpncmd localhost /SERVER /CSV /HUB:DEFAULT /CMD SecureNatEnable
+
+# fix DNS in the DHCP scope
+/opt/vpncmd localhost /SERVER /CSV /HUB:DEFAULT /CMD DhcpSet /START:${DHCPSET_START:-192.168.30.10} /END:${DHCPSET_END:-192.168.30.250} /MASK:${DHCPSET_MASK:-255.255.255.0} /EXPIRE:${DHCPSET_EXPIRE:-86400} /GW:${DHCPSET_GW:-192.168.30.1} /DNS:${DHCPSET_DNS:-8.8.8.8} /DNS2:${DHCPSET_DNS2:-8.8.4.4} /DOMAIN:${DHCPSET_LOCAL:-local} /LOG:${DHCPSET_LOG:-yes}
 
 # enable OpenVPN
 /opt/vpncmd localhost /SERVER /CSV /CMD OpenVpnEnable yes /PORTS:1194
@@ -77,14 +80,22 @@ cat softether.ovpn
 export PASSWORD='**'
 
 # set password for hub
-HPW=$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | fold -w 16 | head -n 1)
-/opt/vpncmd localhost /SERVER /HUB:DEFAULT /CSV /CMD SetHubPassword ${HPW}
+if [ -z "${HUB_PASSWORD}" ]; then
+  HUB_PASSWORD=$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | fold -w 16 | head -n 1)
+  echo HubPassword: ${HUB_PASSWORD}
+fi
+/opt/vpncmd localhost /SERVER /HUB:DEFAULT /CSV /CMD SetHubPassword ${HUB_PASSWORD}
 
 # set password for server
-SPW=$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | fold -w 20 | head -n 1)
-/opt/vpncmd localhost /SERVER /CSV /CMD ServerPasswordSet ${SPW}
+if [ -z "${SERVER_PASSWORD}" ]; then
+  SERVER_PASSWORD=$(cat /dev/urandom | tr -dc 'A-Za-z0-9' | fold -w 20 | head -n 1)
+  echo ServerPassword: ${SERVER_PASSWORD}
+fi
+/opt/vpncmd localhost /SERVER /CSV /CMD ServerPasswordSet ${SERVER_PASSWORD}
 
 /opt/vpnserver stop 2>&1 > /dev/null
+
+tail -f /opt/*log/* /opt/*log/*/* 2>/dev/null &
 
 # while-loop to wait until server goes away
 set +e
