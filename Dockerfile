@@ -1,6 +1,6 @@
 FROM centos:centos7
 
-MAINTAINER Tomohisa Kusano <siomiz@gmail.com>
+MAINTAINER Ian Blenke <ian@blenke.com>
 
 COPY build.sh /build.sh
 COPY run.c /usr/local/src/
