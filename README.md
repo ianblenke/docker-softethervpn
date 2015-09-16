@@ -45,15 +45,15 @@ Go into Settings -> Wireless and Networks (More...) -> VPN -> "+"
 
 In the "Edit VPN profile" panel, enter:
 
-Name: Whatever label you would like
-Type: L2TP/IPSEC PSK  (Do not try to use IPSsec Xauth PSK)
-Server Address: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
-Group: <no group name>
-l2tp secret: <not used>
-ipsec identifier: <not used>
-ipsec pre-shared key: $PSK
-login: $USERNAME
-password: $PASSWORD
+    Name: Whatever label you would like
+    Type: L2TP/IPSEC PSK  (Do not try to use IPSsec Xauth PSK)
+    Server Address: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
+    Group: <no group name>
+    l2tp secret: <not used>
+    ipsec identifier: <not used>
+    ipsec pre-shared key: $PSK
+    login: $USERNAME
+    password: $PASSWORD
 
 ## iOS VPN Client Configuration ##
 
@@ -61,14 +61,14 @@ Go into Settings -> VPN -> Add VPN Configuration
 
 In the "Add Configuration" panel, enter:
 
-Type: L2TP
-Description: Whatever label you would like
-Server: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
-Account: $USERNAME
-RSA SecurID: OFF
-Password: $PASSWORD
-Secret: $PSK
-Send All Traffic: ON
+    Type: L2TP
+    Description: Whatever label you would like
+    Server: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
+    Account: $USERNAME
+    RSA SecurID: OFF
+    Password: $PASSWORD
+    Secret: $PSK
+    Send All Traffic: ON
 
 ## OpenVPN ##
 
