@@ -29,11 +29,52 @@ Dots (.) are part of the password. Password will not be logged if specified via 
 
 Hub & server are locked down; they are given stronger random passwords which are not logged or displayed.
 
-## OpenVPN (Beta) ##
+## Using docker-compose ##
 
-Docker image tag `openvpn` is available for testing, which has OpenVPN compatibilities enabled in addition to IPSec. It will eventually be merged to `latest`.
+There is a docker-compose.yml and a .env file in this github repo that are an example of docker-compose orchestration to spin up a pre-configured container.
 
-`docker run -d -p 1194:1194/udp ianblenke/softethervpn:openvpn`
+To spawn a background docker container:
+
+    docker-compose run -d
+
+You will want to change the .env file's environment variables to contain secrets that are a bit more secure than the defaults presented here.
+
+## Android VPN Client Configuration ##
+
+Go into Settings -> Wireless and Networks (More...) -> VPN -> "+"
+
+In the "Edit VPN profile" panel, enter:
+
+Name: Whatever label you would like
+Type: L2TP/IPSEC PSK  (Do not try to use IPSsec Xauth PSK)
+Server Address: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
+Group: <no group name>
+l2tp secret: <not used>
+ipsec identifier: <not used>
+ipsec pre-shared key: $PSK
+login: $USERNAME
+password: $PASSWORD
+
+## iOS VPN Client Configuration ##
+
+Go into Settings -> VPN -> Add VPN Configuration
+
+In the "Add Configuration" panel, enter:
+
+Type: L2TP
+Description: Whatever label you would like
+Server: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
+Account: $USERNAME
+RSA SecurID: OFF
+Password: $PASSWORD
+Secret: $PSK
+Send All Traffic: ON
+
+## OpenVPN ##
+
+It is also possible to use openvpn instead of IPSec/L2TP:
+
+`docker run -d -p 1194:1194/udp ianblenke/softethervpn`
 
 The entire log can be saved and used as an `.ovpn` config file (change as needed).
 
