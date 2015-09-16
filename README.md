@@ -48,7 +48,6 @@ In the "Edit VPN profile" panel, enter:
     Name: Whatever label you would like
     Type: L2TP/IPSEC PSK  (Do not try to use IPSsec Xauth PSK)
     Server Address: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
-    Group: <no group name>
     l2tp secret: <not used>
     ipsec identifier: <not used>
     ipsec pre-shared key: $PSK
