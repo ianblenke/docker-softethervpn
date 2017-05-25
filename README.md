@@ -69,6 +69,43 @@ In the "Add Configuration" panel, enter:
     Secret: $PSK
     Send All Traffic: ON
 
+## Mac VPN Client Configuration ##
+
+Go into System Preferences -> Network
+At the bottom of the list on the left, there is a + at the bottom. Click on that.
+
+A box will pop up, enter this:
+
+    Interface: VPN
+    VPN Type: L2TP over IPSEC
+    Service Name: Whatever you like, but I suggest the server name
+
+Click Create
+
+This will go back to the Edit panel for the new VPN service name you just created.
+
+    Configuration: Default
+    Server Address: $PUBLIC_IP_OF_YOUR_DOCKER_HOST
+    Account Name: $USERNAME
+
+Click on the Authentication Settings… button
+
+    Password: $PASSWORD
+    Shared Secret: $PSK
+
+Leave `Group Name:` empty.
+Click OK
+
+Click Advanced
+
+Make sure "Send all traffic over VPN conneciton" is checked
+
+Click OK
+
+Click Apply to make this configuration take effect.
+
+You can now click Connect to establish the VPN connection.
+
 ## OpenVPN ##
 
 It is also possible to use openvpn instead of IPSec/L2TP:
